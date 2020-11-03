@@ -1,8 +1,10 @@
 package com.masivian.test.repository;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -79,6 +81,23 @@ public class RouletteDao {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Bet> findBetsByRouletteId(String rouletteId) {
+		List<Bet> bets = new ArrayList<>();
+		List<Bet> betsFinal = new ArrayList<>();
+		try {
+			bets = redisTemplate.opsForHash().values(BET_KEY);
+			betsFinal = bets.
+					stream().
+					filter(bet -> bet.getRouletteId().trim().equals(rouletteId.trim())).
+					collect(Collectors.toList());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return betsFinal;
 	}
 
 }

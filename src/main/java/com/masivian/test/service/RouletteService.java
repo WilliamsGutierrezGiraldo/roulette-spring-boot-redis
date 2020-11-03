@@ -14,5 +14,6 @@ public interface RouletteService {
 	boolean openRoulette(String rouletteId);
 
 	public boolean saveBet(Bet bet);
-
+	
+	public String validateRouletteAndBets(String rouletteId);
 }

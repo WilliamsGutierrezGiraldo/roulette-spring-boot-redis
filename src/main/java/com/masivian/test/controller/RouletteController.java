@@ -57,7 +57,7 @@ public class RouletteController {
 	
 	@PostMapping(path = "/close/{rouletteId}")
 	public ResponseEntity<String> closeRouletteById(@PathVariable(value = "rouletteId") String rouletteId) {
-		return ResponseEntity.ok("Roulette closed, id:" + rouletteId);
+		return ResponseEntity.ok(rouletteService.validateRouletteAndBets(rouletteId));
 	}
 	
 	@GetMapping("/roulettes")
