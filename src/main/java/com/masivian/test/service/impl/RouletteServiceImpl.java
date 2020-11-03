@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.masivian.test.model.Bet;
 import com.masivian.test.model.Roulette;
 import com.masivian.test.repository.RouletteDao;
 import com.masivian.test.service.RouletteService;
@@ -34,8 +35,13 @@ public class RouletteServiceImpl implements RouletteService {
 	}
 
 	@Override
-	public boolean openARoulette(String rouletteId) {
-		return dao.openAroulette(rouletteId);
+	public boolean openRoulette(String rouletteId) {
+		return dao.openRoulette(rouletteId);
+	}
+
+	@Override
+	public boolean saveBet(Bet bet) {
+		return dao.saveBet(bet);
 	}
 
 	

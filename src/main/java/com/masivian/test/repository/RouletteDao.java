@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.masivian.test.model.Bet;
 import com.masivian.test.model.Roulette;
 
 @Repository
@@ -18,6 +19,9 @@ public class RouletteDao {
 	private RedisTemplate redisTemplate;
 	
 	private static final String KEY = "ROULETTE";
+	
+	private static final String BET_KEY = "BET";
+	
 	
 	@SuppressWarnings("unchecked")
 	public boolean save(Roulette roulette) {
@@ -48,7 +52,7 @@ public class RouletteDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public boolean openAroulette(String rouletteId) {
+	public boolean openRoulette(String rouletteId) {
 		Roulette roulette = findById(rouletteId);
 		boolean result;
 		if(Objects.nonNull(roulette)) {
@@ -60,6 +64,21 @@ public class RouletteDao {
 		}
 		
 		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public boolean saveBet(Bet bet) {
+		try {
+			if (Objects.nonNull(findById(bet.getRouletteId()))) {
+				redisTemplate.opsForHash().put(BET_KEY, bet.getRouletteId(), bet);
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 }

@@ -11,8 +11,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.masivian.test.model.Bet;
 import com.masivian.test.model.Roulette;
 import com.masivian.test.service.RouletteService;
 
@@ -36,15 +38,21 @@ public class RouletteController {
 	@PostMapping(path = "/open/{rouletteId}")
 	public ResponseEntity<String> openRoulette(@PathVariable(value = "rouletteId") String rouletteId) {
 		ResponseEntity<String> responseEntity;
-		responseEntity = rouletteService.openARoulette(rouletteId) ? ResponseEntity.ok("Roulette is open") :
+		responseEntity = rouletteService.openRoulette(rouletteId) ? ResponseEntity.ok("Roulette is open") :
 				ResponseEntity.status(HttpStatus.NOT_FOUND).body("Roulette does not exists"); 
 				
 		return responseEntity;
 	} 
 	
 	@PostMapping(path = "/makeBet")
-	public ResponseEntity<String> makeBet(HttpServletRequest request) {
-		return ResponseEntity.ok("Bet received for user: " + request.getHeader("userId").toString());	
+	public ResponseEntity<String> makeBet(HttpServletRequest request, @RequestBody Bet bet) {
+		bet.setUserId(Long.parseLong(request.getHeader("userId")));
+		ResponseEntity<String> responseEntity;
+		responseEntity = rouletteService.saveBet(bet) ? 
+				ResponseEntity.ok("Bet received for user: " + request.getHeader("userId")) : 
+				ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Roulette does not exists");
+		
+		return responseEntity;
 	}
 	
 	@PostMapping(path = "/close/{rouletteId}")
