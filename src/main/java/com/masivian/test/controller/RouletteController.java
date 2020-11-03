@@ -35,7 +35,11 @@ public class RouletteController {
 	
 	@PostMapping(path = "/open/{rouletteId}")
 	public ResponseEntity<String> openRoulette(@PathVariable(value = "rouletteId") String rouletteId) {
-		return ResponseEntity.ok("Roulette open with id: " + rouletteId);
+		ResponseEntity<String> responseEntity;
+		responseEntity = rouletteService.openARoulette(rouletteId) ? ResponseEntity.ok("Roulette is open") :
+				ResponseEntity.status(HttpStatus.NOT_FOUND).body("Roulette does not exists"); 
+				
+		return responseEntity;
 	} 
 	
 	@PostMapping(path = "/makeBet")

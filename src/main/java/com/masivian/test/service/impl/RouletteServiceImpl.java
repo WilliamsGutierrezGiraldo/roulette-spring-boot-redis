@@ -32,6 +32,12 @@ public class RouletteServiceImpl implements RouletteService {
 	public List<Roulette> getAllRouletes() {
 		return dao.getAllRoulettes();
 	}
+
+	@Override
+	public boolean openARoulette(String rouletteId) {
+		return dao.openAroulette(rouletteId);
+	}
+
 	
 	
 

@@ -10,4 +10,6 @@ public interface RouletteService {
 
 	public List<Roulette> getAllRouletes();
 
+	boolean openARoulette(String rouletteId);
+
 }
